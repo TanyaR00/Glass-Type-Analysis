@@ -8,12 +8,10 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import pair_confusion_matrix
 from sklearn.metrics import precision_score, recall_score
 
-# ML classifier Python modules
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 
-# Loading the dataset.
 @st.cache_data()
 def load_data():
     file_path = "file:///D:\Backup\python_scripts\glass-types.csv"
@@ -25,7 +23,6 @@ def load_data():
     # Renaming columns with suitable column headers.
     for i in df.columns:
         columns_dict[i] = column_headers[i - 1]
-        # Rename the columns.
         df.rename(columns_dict, axis = 1, inplace = True)
     return df
 
@@ -69,10 +66,7 @@ if st.sidebar.checkbox("Show raw data"):
 
   # Add a subheader in the sidebar with label "Scatter Plot".
 st.sidebar.subheader("Scatter plot")
-
 features_list = st.sidebar.multiselect('Select X axis values:', ('RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba', 'Fe'))
-
-
 for feature in features_list:
   st.subheader(f'Scatter plot between {feature} and glass type')
   plt.figure(figsize = (12,6))
@@ -82,8 +76,7 @@ for feature in features_list:
 # Add a subheader in the sidebar with label "Visualisation Selector"
 st.sidebar.subheader("Visualisation Selector")
 # Add a multiselect in the sidebar with label 'Select the Charts/Plots:'
-# and with 6 options passed as a tuple ('Histogram', 'Box Plot', 'Count Plot', 'Pie Chart', 'Correlation Heatmap', 'Pair Plot').
-# Store the current value of this widget in a variable 'plot_types'.
+# and with 6 options passed as a tuple ('Histogram', 'Box Plot', 'Count Plot', 'Pie Chart', 'Correlation Heatmap', 'Pair Plot')..
 plot_types = st.sidebar.multiselect("Select the type of plot", ('Histogram', 'Box Plot', 'Count Plot', 'Pie Chart', 'Correlation Heatmap', 'Pair Plot'))
 
 # S1.2: Create histograms for the selected features using the 'selectbox' widget.
@@ -107,7 +100,6 @@ if 'Count Plot' in plot_types:
   st.subheader("Count plot")
   sns.countplot(x = 'GlassType', data = glass_df)
   st.pyplot()
-# Create pie chart using the 'matplotlib.pyplot' module and the 'st.pyplot()' function.
 if 'Pie Chart' in plot_types:
   st.subheader("Pie Chart")
   pi_data = glass_df['GlassType'].value_counts()
@@ -145,7 +137,6 @@ fe = st.sidebar.slider("Input Fe", float(glass_df['Fe'].min()), float(glass_df['
 st.sidebar.subheader("Choose Classifier")
 # Add a selectbox in the sidebar with label 'Classifier'.
 # and with 2 options passed as a tuple ('Support Vector Machine', 'Random Forest Classifier').
-# Store the current value of this slider in a variable 'classifier'.
 classifier = st.sidebar.selectbox("Classifier:", ('Support Vector Machine', 'Random Forest Classifier', 'Logistic Regression'))
 
 # if classifier == 'Support Vector Machine', ask user to input the values of 'C','kernel' and 'gamma'.
@@ -155,7 +146,6 @@ if classifier == 'Support Vector Machine':
   kernel_input = st.sidebar.radio('Kernel:', ('linear', 'rbf', 'poly'))
   gamma_input = st.sidebar.number_input('Gamma:', 1, 100, step = 1)
     # If the user clicks 'Classify' button, perform prediction and display accuracy score and confusion matrix.
-    # This 'if' statement must be inside the above 'if' statement.
   if st.sidebar.button('Classify'):
     st.subheader('Support Vector Machine')
     svc_model = SVC(C= c_value, kernel = kernel_input, gamma = gamma_input)
@@ -168,14 +158,12 @@ if classifier == 'Support Vector Machine':
     pair_confusion_matrix(svc_model, X_test, y_test)
     st.pyplot()
 
-# S5.1: Implement Random Forest Classifier with hyperparameter tuning.
 # if classifier == 'Random Forest Classifier', ask user to input the values of 'n_estimators' and 'max_depth'.
 if classifier == 'Random Forest Classifier':
   st.sidebar.subheader("Model HyperParameters")
   n_estimators_input = st.sidebar.number_input('No. of Estimators', 100,5000,step = 1)
   max_depth_input = st.sidebar.number_input('Gamma:', 1, 20, step = 1)
     # If the user clicks 'Classify' button, perform prediction and display accuracy score and confusion matrix.
-    # This 'if' statement must be inside the above 'if' statement.
   if st.sidebar.button('Classify'):
     st.subheader('Random Forest Classifier')
     rf_clf = RandomForestClassifier(n_estimators = n_estimators_input, max_depth=max_depth_input, n_jobs = -1)

@@ -69,10 +69,7 @@ if st.sidebar.checkbox("Show raw data"):
 
   # Add a subheader in the sidebar with label "Scatter Plot".
 st.sidebar.subheader("Scatter plot")
-# Choosing x-axis values for the scatter plot.
-# Add a multiselect in the sidebar with the 'Select the x-axis values:' label
-# and pass all the 9 features as a tuple i.e. ('RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba', 'Fe') as options.
-# Store the current value of this widget in the 'features_list' variable.
+
 features_list = st.sidebar.multiselect('Select X axis values:', ('RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba', 'Fe'))
 
 

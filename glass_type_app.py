@@ -34,7 +34,6 @@ X = glass_df.iloc[:, :-1]
 # Creating the target series that holds last column.
 y = glass_df['GlassType']
 
-# Spliting the data into training and testing sets.
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 42)
 
 @st.cache_data()
@@ -64,7 +63,6 @@ if st.sidebar.checkbox("Show raw data"):
   st.subheader('Full Dataset')
   st.dataframe(glass_df)
 
-  # Add a subheader in the sidebar with label "Scatter Plot".
 st.sidebar.subheader("Scatter plot")
 features_list = st.sidebar.multiselect('Select X axis values:', ('RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba', 'Fe'))
 for feature in features_list:
@@ -73,10 +71,8 @@ for feature in features_list:
   sns.scatterplot(x = feature, y = 'GlassType', data = glass_df)
   st.pyplot()
 
-# Add a subheader in the sidebar with label "Visualisation Selector"
 st.sidebar.subheader("Visualisation Selector")
-# Add a multiselect in the sidebar with label 'Select the Charts/Plots:'
-# and with 6 options passed as a tuple ('Histogram', 'Box Plot', 'Count Plot', 'Pie Chart', 'Correlation Heatmap', 'Pair Plot')..
+
 plot_types = st.sidebar.multiselect("Select the type of plot", ('Histogram', 'Box Plot', 'Count Plot', 'Pie Chart', 'Correlation Heatmap', 'Pair Plot'))
 
 # S1.2: Create histograms for the selected features using the 'selectbox' widget.
@@ -106,7 +102,7 @@ if 'Pie Chart' in plot_types:
   plt.figure(figsize = (12,6))
   plt.pie(pi_data, labels = pi_data.index, autopct = "%1.2f%%", startangle = 30, explode = np.linspace(0.06,0.16,6))
   st.pyplot()
-# Display correlation heatmap using the 'seaborn' module and the 'st.pyplot()' function.
+# Display correlation heatmap 
 if 'Correlation Heatmap' in plot_types:
   st.subheader("Correlation Heatmap")
   plt.figure(figsize = (12,6))
@@ -114,14 +110,13 @@ if 'Correlation Heatmap' in plot_types:
   bottom, top = ax.get_ylim()
   ax.set_ylim(bottom + 0.5, top - 0.5)
   st.pyplot()
-# Display pair plots using the the 'seaborn' module and the 'st.pyplot()' function.
+# Display pair plots 
 if "Pair Plot" in plot_types:
   st.subheader("Pair Plot")
   plt.figure(figsize = (12,6))
   sns.pairplot(glass_df)
   st.pyplot()
 
-# S2.1: Add 9 slider widgets for accepting user input for 9 features.
 st.sidebar.subheader("Select your values:")
 ri = st.sidebar.slider("Input RI", float(glass_df['RI'].min()), float(glass_df['RI'].max()))
 na = st.sidebar.slider("Input Na", float(glass_df['Na'].min()), float(glass_df['Na'].max()))
@@ -133,19 +128,19 @@ ca = st.sidebar.slider("Input Ca", float(glass_df['Ca'].min()), float(glass_df['
 ba = st.sidebar.slider("Input Ba", float(glass_df['Ba'].min()), float(glass_df['Ba'].max()))
 fe = st.sidebar.slider("Input Fe", float(glass_df['Fe'].min()), float(glass_df['Fe'].max()))
 
-# Add a subheader in the sidebar with label "Choose Classifier"
+
 st.sidebar.subheader("Choose Classifier")
 # Add a selectbox in the sidebar with label 'Classifier'.
-# and with 2 options passed as a tuple ('Support Vector Machine', 'Random Forest Classifier').
 classifier = st.sidebar.selectbox("Classifier:", ('Support Vector Machine', 'Random Forest Classifier', 'Logistic Regression'))
 
-# if classifier == 'Support Vector Machine', ask user to input the values of 'C','kernel' and 'gamma'.
+# if classifier == 'Support Vector Machine', input the values of C, kernel and gamma.
 if classifier == 'Support Vector Machine':
   st.sidebar.subheader("Model HyperParameters")
   c_value = st.sidebar.number_input('C Error Rate', 1,100,step = 1)
   kernel_input = st.sidebar.radio('Kernel:', ('linear', 'rbf', 'poly'))
   gamma_input = st.sidebar.number_input('Gamma:', 1, 100, step = 1)
-    # If the user clicks 'Classify' button, perform prediction and display accuracy score and confusion matrix.
+    
+  # If the user clicks 'Classify' button, perform prediction and display accuracy score and confusion matrix.
   if st.sidebar.button('Classify'):
     st.subheader('Support Vector Machine')
     svc_model = SVC(C= c_value, kernel = kernel_input, gamma = gamma_input)
